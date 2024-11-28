@@ -45,7 +45,7 @@ export class StudentsController {
         try{
             const updatedStudent = await this.studentService.updateStudent(studentId, updateStudentDto);
             return response.status(HttpStatus.OK).json({
-                message: "Student has been succesfully updated",
+                message: "Student has been successfully updated",
                 updatedStudent
             })
         }catch(err){

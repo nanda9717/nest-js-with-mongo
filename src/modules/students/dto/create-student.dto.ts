@@ -1,4 +1,22 @@
-import { IsNotEmpty, isNotEmpty, IsNumber, IsString, MaxLength } from "class-validator";
+import { Type } from "class-transformer";
+import { IsBoolean, IsNotEmpty, isNotEmpty, IsNumber, IsOptional, IsString, MaxLength, ValidateNested } from "class-validator";
+
+export class CreateStudentProfileDto{
+
+    @IsOptional()
+    email?: string;
+
+    @IsOptional()
+    @IsNumber()
+    phoneNumber?: number;
+
+    @IsOptional()
+    avatarUrl?: string;
+
+    @IsOptional()
+    @IsBoolean()
+    receiveNotification?: boolean
+}
 
 export class CreateStudentDto{
 
@@ -20,5 +38,10 @@ export class CreateStudentDto{
     @MaxLength(10)
     @IsNotEmpty()
     readonly gender: string
+
+    @IsOptional()
+    @ValidateNested()
+    @Type(() => CreateStudentProfileDto)
+    profile?: CreateStudentProfileDto
 
 }

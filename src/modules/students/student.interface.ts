@@ -5,4 +5,5 @@ export interface IStudent extends Document{
     readonly roleNumber: string;
     readonly class: number;
     readonly gender: string;
+    readonly profile?: any;
 }

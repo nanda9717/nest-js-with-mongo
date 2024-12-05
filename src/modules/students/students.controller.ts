@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { response } from 'express';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import mongoose from 'mongoose';
 
 @Controller('students')
 export class StudentsController {
@@ -22,7 +23,7 @@ export class StudentsController {
             return response.status(HttpStatus.BAD_REQUEST).json({
                 statusCode: 400,
                 message: "Error Student not created",
-                error: 'Bas Request'
+                error: 'Bad Request'
             })
         }
     }
@@ -69,6 +70,10 @@ export class StudentsController {
     @Get('/:id')
     async getStudentById(@Res() response, @Param('id') studentId:string){
         try{
+            const isValidId = mongoose.Types.ObjectId.isValid(studentId);
+            if(!isValidId) return response.status(HttpStatus.BAD_REQUEST).json({
+                message: 'Invalid ID'
+            })
             const student = await this.studentService.getStudentById(studentId);
             return response.status(HttpStatus.OK).json({
                 message: "Student found successfully",
